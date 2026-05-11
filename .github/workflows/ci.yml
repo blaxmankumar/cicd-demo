@@ -21,7 +21,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::YOUR_ACCOUNT_ID:role/YOUR_ROLE_NAME
-          aws-region: ap-south-1
+          aws-region: us-east-1
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -48,7 +48,7 @@ jobs:
       - name: Deploy to EC2 using SSM
         run: |
           aws ssm send-command \
-            --instance-ids "i-xxxxxxxxxxxxx" \
+            --instance-ids "i-09ec02e3e71896197" \
             --document-name "AWS-RunShellScript" \
             --comment "Deploy application" \
             --parameters commands='[
@@ -58,7 +58,7 @@ jobs:
               "sudo docker run -d --name cicd-demo -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/cicd-demo:latest",
               "sudo docker image prune -f"
             ]' \
-            --region ap-south-1
+            --region us-east-1
 
       - name: Done
         run: echo "Deployment Successful!"
